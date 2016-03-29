@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Temperature Sensor Demo</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="sticky-footer.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+ 
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+
+    <script>
+    var socket = io.connect('192.168.1.36:3000');  //enter the IP of your beaglebone and port you are using in app.js
+
+    socket.on('sensors', function (data) { //append sensors to table
+     data.forEach(function (d) {
+       var html = '<tr><td>' + d + '</td><td id="' + d + '"></td></tr>';
+       $('#temps').append(html);
+     });
+    });
+
+    //update corresponding row with sensor value
+    socket.on('temps', function (data) {
+    $('#' + data.id).html(data.value);
+    });
+
+    </script>
+  </head>
+
+  <body>
+
+    <!-- Begin page content -->
+    <div class="container">
+      <div class="page-header">
+        <h1>What's the temperature in here, anyways?</h1>
+      </div>
+
+      <p>The DS18B20 Digital temperature sensor (AKA the Dallas Temperature Sensor) collects the temperature and sends the data over "one wire" to the Raspberry Pi where you can see it live here!</p>
+
+      <p>If you hold the silver end of the sensor really tight in your hand, you will see the temperature rise! If you put the silver end in a cup of ice water, you will see it fall really fast!</p>
+
+    <table class="table table-striped" id="temps">
+      <thead>
+        <tr>
+          <th>Sensor ID</th>
+          <th>Temperature (&deg;F)</th>
+        </tr>
+      </thead>
+    </table>
+    </div>
+
+    <footer class="navbar-default navbar-fixed-bottom">
+      <div class="container-fluid">
+        <p class="text-muted">Made by Adam Starbuck <a href="http://starbuckstech.com">starbuckstech.com</a> 2016</p>
+      </div>
+    </footer>
+
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
