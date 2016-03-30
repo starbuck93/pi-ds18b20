@@ -35,7 +35,7 @@
     <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
 
     <script>
-    var socket = io.connect('192.168.1.36:3000');  //enter the IP of your beaglebone and port you are using in app.js
+    var socket = io.connect('pi_ip_address:3000');  //enter the IP of your beaglebone and port you are using in app.js
 
     socket.on('sensors', function (data) { //append sensors to table
      data.forEach(function (d) {
